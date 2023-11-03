@@ -1,5 +1,5 @@
 # springboot-oauth2-jwt-and-basic-auth-security
-Application to demonstrate to configure multiple HttpSecurity instances in Spring Security to secure
+Application demonstrates how to configure multiple HttpSecurity instances in Spring Security to secure
 one API with basic authentication and all other APIs with OAuth2 JWT authentication.
 
 - User signup API with 'No Auth' as authentication type

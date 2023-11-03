@@ -21,7 +21,7 @@ configures OAuth2 resource server with Jwt-encoded bearer token support.
 ### Application Functionalities
 
 1. <b>User Registration (No Auth)</b>
-   - New use registration without API authentication
+   - New user registration without API authentication
 2. <b> Get Access Token (Basic Auth)</b>
 3. <b>User Management (Bearer Token)</b>
    - Get all users

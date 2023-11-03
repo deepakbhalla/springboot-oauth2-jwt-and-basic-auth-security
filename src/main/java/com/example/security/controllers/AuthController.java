@@ -54,13 +54,22 @@ public class AuthController {
         return ResponseEntity.ok().body(new ApiGenericResponse(true, "User registered successfully: " + user.getUsername()));
     }
 
-    @PostMapping(value = "/token")
-    public ResponseEntity<?> getToken(Authentication authentication) {
+    @Operation(summary = "Get Bearer Access Token")
+    @ApiResponse(responseCode = "200", description = "Fetched access token",
+            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = JwtAuthenticationResponse.class))})
+    @PostMapping(value = "/token", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
+    public ResponseEntity<JwtAuthenticationResponse> getToken(Authentication authentication) {
         UserEntity localUser = (UserEntity) authentication.getPrincipal();
         String jwt = getToken(localUser);
         return ResponseEntity.ok((new JwtAuthenticationResponse(jwt)));
     }
 
+    /**
+     * Builds JWT token for the given User.
+     *
+     * @param localUser - UserEntity which implements UserDetails
+     * @return token - String - JWT Token
+     */
     private String getToken(UserEntity localUser) {
         Instant now = Instant.now();
         long expiry = 36000L;

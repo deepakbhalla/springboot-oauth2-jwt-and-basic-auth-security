@@ -39,28 +39,48 @@ import java.security.interfaces.RSAPublicKey;
 @Configuration
 public class SecurityConfig {
 
+    /**
+     * While-listed urls.
+     */
     public static final String[] PUBLIC_PATHS = {
             "/health",
             "/api/auth/signup",
-            "/api/auth/token",
             "/v3/api-docs.yaml",
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-ui/index.html"
     };
 
+    /**
+     * UserDetailsService extends org.springframework.security.core.userdetails.UserDetailsService.
+     * UserDetailsService is a core interface that loads user-specific data. It is used throughout the framework as a
+     * user DAO and will be used by the DaoAuthenticationProvider during authentication.
+     */
     @Autowired
     private UserDetailsService userDetailsService;
 
+    /**
+     * AuthenticationEntryPoint extends BasicAuthenticationEntryPoint
+     */
     @Autowired
     AuthenticationEntryPoint authenticationEntryPoint;
 
+    /**
+     * RSA Public Key
+     */
     @Value("${jwt.public.key}")
     RSAPublicKey key;
 
+    /**
+     * RSA Private Key
+     */
     @Value("${jwt.private.key}")
     RSAPrivateKey privateKey;
 
+    /**
+     * DaoAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider
+     * @return authenticationProvider - DaoAuthenticationProvider
+     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -69,6 +89,13 @@ public class SecurityConfig {
         return authenticationProvider;
     }
 
+    /**
+     * Highest order of SecurityFilterChain defined for Basic Auth authentication only.
+     *
+     * @param http - HttpSecurity
+     * @return SecurityFilterChain
+     * @throws Exception
+     */
     @Bean
     @Order(1)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -81,6 +108,13 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * SecurityFilterChain defined for Bearer Token authentication only.
+     *
+     * @param http - HttpSecurity
+     * @return SecurityFilterChain
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -104,11 +138,23 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Returns JwtDecoder object using org.springframework.security.oauth2.jwt.NimbusJwtDecoder implementation
+     * which utilizes RSA public key present in the /resources folder of the project.
+     *
+     * @return JwtDecoder
+     */
     @Bean
     JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withPublicKey(this.key).build();
     }
 
+    /**
+     * Returns JwtEncoder object using org.springframework.security.oauth2.jwt.NimbusJwtEncoder implementation .
+     * which utilizes RSA private key present in the /resources folder of the project.
+     *
+     * @return JwtEncoder
+     */
     @Bean
     JwtEncoder jwtEncoder() {
         JWK jwk = new RSAKey.Builder(this.key).privateKey(this.privateKey).build();
@@ -116,11 +162,24 @@ public class SecurityConfig {
         return new NimbusJwtEncoder(jwks);
     }
 
+    /**
+     * Password encoder for storing/fetching user password. This is utilized by DaoAuthenticationProvider bean.
+     * BCryptPasswordEncoder implementation has been used here.
+     *
+     * @return PasswordEncoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Bean of org.springframework.security.authentication.AuthenticationManager;
+     *
+     * @param authenticationConfiguration - AuthenticationConfiguration
+     * @return AuthenticationConfiguration
+     * @throws Exception
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();

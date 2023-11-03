@@ -35,7 +35,8 @@ public class AccountTransactionsController {
             @ApiResponse(responseCode = "200", description = "Account credited",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Account.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid account number and/or amount supplied", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Account not found", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Account not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized Access", content = @Content) })
     @PutMapping(value = "/deposit", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public Account deposit(
             @Parameter(description = "Account number to be credited")
@@ -50,7 +51,8 @@ public class AccountTransactionsController {
             @ApiResponse(responseCode = "200", description = "Account debited",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Account.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid account number and/or amount supplied", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Account not found", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Account not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized Access", content = @Content) })
     @PutMapping(value = "/withdraw", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public Account withdraw(
             @Parameter(description = "Account number to be debited")

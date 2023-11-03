@@ -44,6 +44,7 @@ public class AccountManagementController {
     @Operation(summary = "Get all accounts")
     @ApiResponse(responseCode = "200", description = "All existing accounts",
             content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Account.class))})
+    @ApiResponse(responseCode = "401", description = "Unauthorized Access", content = {@Content})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public List<Account> getAllAccounts() {
         return this.accountService.getAllAccounts();
@@ -58,8 +59,8 @@ public class AccountManagementController {
     @Operation(summary = "Create an account")
     @ApiResponse(responseCode = "200", description = "Account created",
         content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Account.class))})
-    @ApiResponse(responseCode = "400", description = "Invalid request body",
-            content = {@Content})
+    @ApiResponse(responseCode = "400", description = "Invalid request body", content = {@Content})
+    @ApiResponse(responseCode = "401", description = "Unauthorized Access", content = {@Content})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Account createAccount(
             @RequestBody(description = "Request body takes only account holder name 'accountHolderName' and account branch 'accountBranch' to create a new account", required = true,
@@ -79,7 +80,8 @@ public class AccountManagementController {
             @ApiResponse(responseCode = "200", description = "Found an account",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Account.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid account number supplied", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Account not found", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Account not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized Access", content = @Content)})
     @GetMapping(value = "/{accountNumber}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public Account getAccountBalance(
             @Parameter(description = "Account number to be searched")
@@ -99,7 +101,8 @@ public class AccountManagementController {
             @ApiResponse(responseCode = "200", description = "Account updated",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Account.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid account number and/or new branch name supplied", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Account not found", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Account not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized Access", content = @Content)})
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public Account updateAccountBranch(
             @Parameter(description = "Account to be updated")
@@ -120,7 +123,8 @@ public class AccountManagementController {
             @ApiResponse(responseCode = "200", description = "Deleted an account",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Account.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid account number supplied", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Account not found", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Account not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized Access", content = @Content)})
     @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<DeleteAccount> deleteAccount(
             @Parameter(description = "Account number to be searched")

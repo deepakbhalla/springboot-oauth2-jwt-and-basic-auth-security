@@ -33,26 +33,30 @@ public class OpenAPI3SwaggerConfig {
     public OpenAPI customAPI() {
 
         Contact contact = new Contact();
-        contact.setName("OpenAPI3 Example Application");
+        contact.setName("Spring Security Application utilizing OAuth2 JWT Bearer Token and Basic Auth");
         contact.url("www.google.com");
         contact.email("test@email.com");
 
+        /* Info */
         Info info = new Info()
                 .title((StringUtils.join(appName)))
-                .description("Spring boot sample application to demonstrate Spring boot security using Basic Auth type. " +
-                        "This application has APIs to create and manage Users, Accounts and Transactions. It utilizes " +
-                        "JSONB data type supported by PostgreSQL database along with OpenAPI 3 specifications.")
+                .description("Spring boot sample application to demonstrate Spring boot security using OAuth2 JWT Bearer " +
+                        "Token and Basic Auth type. This application has APIs to create users, get access token and manage " +
+                        "Users, Accounts and Transactions. It utilizes JSONB data type supported by PostgreSQL database " +
+                        "along with OpenAPI 3 specifications.")
                 .version("1.0")
                 .contact(contact)
                 .license(new License().name("My Application 1.0").url("www.google.com"));
 
+        /* authentication type: basic auth */
         SecurityRequirement securityRequirement = new SecurityRequirement();
         Components components = new Components();
-        components.addSecuritySchemes("Basic Auth", new SecurityScheme().name("basicAuth")
+        components.addSecuritySchemes("basicAuth", new SecurityScheme().name("basicAuth")
                 .type(SecurityScheme.Type.HTTP).scheme("basic"));
         securityRequirement.addList("basicAuth");
 
-        components.addSecuritySchemes("Bearer Token", new SecurityScheme().name("bearerToken")
+        /* authentication type: bearer token */
+        components.addSecuritySchemes("bearerToken", new SecurityScheme().name("bearerToken")
                 .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT"));
         securityRequirement.addList("bearerToken");
 

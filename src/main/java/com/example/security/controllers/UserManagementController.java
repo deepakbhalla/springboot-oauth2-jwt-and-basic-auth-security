@@ -36,6 +36,7 @@ public class UserManagementController {
     @Operation(summary = "Get all users")
     @ApiResponse(responseCode = "200", description = "All existing users",
             content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Account.class))})
+    @ApiResponse(responseCode = "401", description = "Unauthorized Access", content = {@Content})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public List<User> getAllUsers() {
         return this.userManagementService.getAllUsers();
@@ -44,6 +45,7 @@ public class UserManagementController {
     @Operation(summary = "Delete a user")
     @ApiResponse(responseCode = "200", description = "User deleted successfully",
             content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ApiGenericResponse.class))})
+    @ApiResponse(responseCode = "401", description = "Unauthorized Access", content = {@Content})
     @DeleteMapping(value = "/{username}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<ApiGenericResponse> deleteUser(@PathVariable("username") String username) throws ResourceNotFoundException {
         this.userManagementService.deleteUser(username);

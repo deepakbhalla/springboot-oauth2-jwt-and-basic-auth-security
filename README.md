@@ -15,8 +15,8 @@ to implement a small part of the Oauth2 spec and not necessarily implement the e
 parse the request for bearer tokens and make an authentication attempt. Therefore, we don’t need to implement our own 
 custom filters as we did in our previous articles.
 
-3. Thirdly, Jwt and Opaque Token are the only supported formats for bearer tokens in Spring Security. So, we are gonna 
-configure our OAuth2 resource server with Jwt-encoded bearer token support.
+3. Thirdly, Jwt and Opaque Token are the only supported formats for bearer tokens in Spring Security. This application  
+configures OAuth2 resource server with Jwt-encoded bearer token support.
 
 ### Application Functionalities
 
